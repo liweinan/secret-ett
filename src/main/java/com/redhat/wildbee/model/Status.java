@@ -1,33 +1,29 @@
 package com.redhat.wildbee.model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
 import java.io.Serializable;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Column;
+import javax.persistence.Version;
 import java.lang.Override;
-import java.util.Date;
-import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@XmlRootElement
-public class User implements Serializable
+public class Status implements Serializable
 {
 
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
    @Column(name = "id", updatable = false, nullable = false)
    private Long id;
+
    @Version
    @Column(name = "version")
    private int version;
 
    @Column(nullable = false)
    private String name;
-
-   @Column(nullable = false)
-   private String email;
-
-   @Column(nullable = false, updatable = false)
-   @Temporal(TemporalType.TIMESTAMP)
-   private Date dateCreated;
 
    public Long getId()
    {
@@ -49,26 +45,6 @@ public class User implements Serializable
       this.version = version;
    }
 
-   public String getName()
-   {
-      return name;
-   }
-
-   public void setName(String name)
-   {
-      this.name = name;
-   }
-
-   public String getEmail()
-   {
-      return email;
-   }
-
-   public void setEmail(String email)
-   {
-      this.email = email;
-   }
-
    @Override
    public boolean equals(Object obj)
    {
@@ -76,11 +52,11 @@ public class User implements Serializable
       {
          return true;
       }
-      if (!(obj instanceof User))
+      if (!(obj instanceof Status))
       {
          return false;
       }
-      User other = (User) obj;
+      Status other = (Status) obj;
       if (id != null)
       {
          if (!id.equals(other.id))
@@ -100,34 +76,25 @@ public class User implements Serializable
       return result;
    }
 
-   public Date getDateCreated()
+   public String getName()
    {
-      return dateCreated;
+      return name;
    }
 
-   public void setDateCreated(Date dateCreated)
+   public void setName(String name)
    {
-      this.dateCreated = dateCreated;
+      this.name = name;
    }
 
    @Override
    public String toString()
    {
       String result = getClass().getSimpleName() + " ";
+      if (id != null)
+         result += "id: " + id;
+      result += ", version: " + version;
       if (name != null && !name.trim().isEmpty())
-         result += "name: " + name;
-      if (email != null && !email.trim().isEmpty())
-         result += ", email: " + email;
+         result += ", name: " + name;
       return result;
-   }
-
-   @PreUpdate @PrePersist
-   private void setDateCreated()
-   {
-      Date date = new Date();
-      if (dateCreated == null)
-      {
-         dateCreated = date;
-      }
    }
 }
