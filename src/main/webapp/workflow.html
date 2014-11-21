@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="UserApp">
+<head>
+    <meta charset="utf-8">
+    <title>WASUP</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
+    <script src="js/app.js"></script>
+</head>
+<body ng-controller="WorkflowAppController">
+<form class="simple-form">
+    <table border="1">
+        <tr>
+            <th>Current\Next</th>
+                <th ng-repeat="status in statuses">
+                    {{ status.name }}
+                </th>
+        </tr>
+        <tr ng-repeat="status in statuses">
+            <td><strong>{{ status.name }}</strong></td>
+            <td ng-repeat="next_status in statuses">
+                <input type="checkbox" ng-model="haha[status.name][next_status.name]" />
+            </td>
+        </tr>
+    </table>
+    <button ng-click="reset()">RESET</button>
+    <button ng-click="update()">SAVE</button>
+</form>
+</body>
+</html>

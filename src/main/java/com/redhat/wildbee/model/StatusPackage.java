@@ -1,17 +1,18 @@
 package com.redhat.wildbee.model;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.io.Serializable;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Column;
-import javax.persistence.Version;
 import java.lang.Override;
+import javax.xml.bind.annotation.XmlRootElement;
+
 
 @Entity
-public class Status implements Serializable
+@XmlRootElement
+public class StatusPackage implements Serializable
 {
+   public enum Tag {
+      FINISHED, ORDINARY, IN_PROGRESS
+   }
 
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,6 +25,10 @@ public class Status implements Serializable
 
    @Column(nullable = false)
    private String name;
+
+   @Column(nullable = false)
+   @Enumerated(EnumType.STRING)
+   private Tag tag;
 
    public Long getId()
    {
@@ -52,11 +57,11 @@ public class Status implements Serializable
       {
          return true;
       }
-      if (!(obj instanceof Status))
+      if (!(obj instanceof StatusPackage))
       {
          return false;
       }
-      Status other = (Status) obj;
+      StatusPackage other = (StatusPackage) obj;
       if (id != null)
       {
          if (!id.equals(other.id))
@@ -86,6 +91,16 @@ public class Status implements Serializable
       this.name = name;
    }
 
+   public Tag getTag()
+   {
+      return tag;
+   }
+
+   public void setTag(Tag tag)
+   {
+      this.tag = tag;
+   }
+
    @Override
    public String toString()
    {
@@ -95,6 +110,8 @@ public class Status implements Serializable
       result += ", version: " + version;
       if (name != null && !name.trim().isEmpty())
          result += ", name: " + name;
+      if (tag != null)
+         result += ", flag: " + tag;
       return result;
    }
 }

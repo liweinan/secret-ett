@@ -8,8 +8,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.Version;
 import java.lang.Override;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
+@XmlRootElement
 public class Workflow implements Serializable
 {
 
@@ -20,6 +22,9 @@ public class Workflow implements Serializable
    @Version
    @Column(name = "version")
    private int version;
+
+   @Column(nullable = false)
+   private String name;
 
    public Long getId()
    {
@@ -39,15 +44,6 @@ public class Workflow implements Serializable
    public void setVersion(final int version)
    {
       this.version = version;
-   }
-
-   @Override
-   public String toString()
-   {
-      String result = getClass().getSimpleName() + " ";
-      if (id != null)
-         result += "id: " + id;
-      return result;
    }
 
    @Override
@@ -78,6 +74,25 @@ public class Workflow implements Serializable
       final int prime = 31;
       int result = 1;
       result = prime * result + ((id == null) ? 0 : id.hashCode());
+      return result;
+   }
+
+   public String getName()
+   {
+      return name;
+   }
+
+   public void setName(String name)
+   {
+      this.name = name;
+   }
+
+   @Override
+   public String toString()
+   {
+      String result = getClass().getSimpleName() + " ";
+      if (name != null && !name.trim().isEmpty())
+         result += "name: " + name;
       return result;
    }
 }

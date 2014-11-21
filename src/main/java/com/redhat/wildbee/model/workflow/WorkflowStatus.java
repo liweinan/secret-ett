@@ -8,11 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.Version;
 import java.lang.Override;
-import com.redhat.wildbee.model.workflow.Workflow;
 import javax.persistence.ManyToOne;
-import com.redhat.wildbee.model.Status;
+import com.redhat.wildbee.model.StatusPackage;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
+@XmlRootElement
 public class WorkflowStatus implements Serializable
 {
 
@@ -28,10 +29,10 @@ public class WorkflowStatus implements Serializable
    private Workflow workflow;
 
    @ManyToOne(optional = false)
-   private Status status;
+   private StatusPackage statusPackage;
 
    @ManyToOne
-   private Status nextStatus;
+   private StatusPackage nextStatusPackage;
 
    public Long getId()
    {
@@ -103,23 +104,23 @@ public class WorkflowStatus implements Serializable
       this.workflow = workflow;
    }
 
-   public Status getStatus()
+   public StatusPackage getStatusPackage()
    {
-      return this.status;
+      return this.statusPackage;
    }
 
-   public void setStatus(final Status status)
+   public void setStatusPackage(final StatusPackage statusPackage)
    {
-      this.status = status;
+      this.statusPackage = statusPackage;
    }
 
-   public Status getNextStatus()
+   public StatusPackage getNextStatusPackage()
    {
-      return this.nextStatus;
+      return this.nextStatusPackage;
    }
 
-   public void setNextStatus(final Status nextStatus)
+   public void setNextStatusPackage(final StatusPackage nextStatusPackage)
    {
-      this.nextStatus = nextStatus;
+      this.nextStatusPackage = nextStatusPackage;
    }
 }

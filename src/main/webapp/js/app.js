@@ -21,3 +21,29 @@ app.controller('UserAppController', function($scope, $http) {
             });
     };
 });
+
+app.controller('StatusAppController', function($scope, $http) {
+    $scope.status = {};
+    $scope.status.name = "";
+    $scope.reset = function() {
+        $scope.status.text = "";
+    };
+
+    $scope.update = function() {
+            $http.post('/wildbee/rest/statuses', $scope.status).
+            success(function(data, status, headers, config) {
+                alert("success!");
+            });
+    };
+});
+
+app.controller('WorkflowAppController', function($scope, $http) {
+    $scope.statuses = [];
+    $scope.haha = {};
+    $http.get('/wildbee/rest/statuses').success(function(data, status, headers, config) {
+        $scope.statuses = data;
+    });
+    $scope.update = function() {
+        alert($scope.haha['Open']['Open']);
+    };
+});
