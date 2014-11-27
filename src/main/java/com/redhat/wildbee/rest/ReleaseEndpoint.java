@@ -20,31 +20,31 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
-import com.redhat.wildbee.model.Package;
+import com.redhat.wildbee.model.Release;
 
 /**
  * 
  */
 @Stateless
-@Path("/packages")
-public class PackageEndpoint
+@Path("/releases")
+public class ReleaseEndpoint
 {
    @PersistenceContext(unitName = "wildbee-persistence-unit")
    private EntityManager em;
 
    @POST
    @Consumes("application/json")
-   public Response create(Package entity)
+   public Response create(Release entity)
    {
       em.persist(entity);
-      return Response.created(UriBuilder.fromResource(PackageEndpoint.class).path(String.valueOf(entity.getId())).build()).build();
+      return Response.created(UriBuilder.fromResource(ReleaseEndpoint.class).path(String.valueOf(entity.getId())).build()).build();
    }
 
    @DELETE
    @Path("/{id:[0-9][0-9]*}")
    public Response deleteById(@PathParam("id") Long id)
    {
-      Package entity = em.find(Package.class, id);
+      Release entity = em.find(Release.class, id);
       if (entity == null)
       {
          return Response.status(Status.NOT_FOUND).build();
@@ -58,9 +58,9 @@ public class PackageEndpoint
    @Produces("application/json")
    public Response findById(@PathParam("id") Long id)
    {
-      TypedQuery<Package> findByIdQuery = em.createQuery("SELECT DISTINCT p FROM Package p LEFT JOIN FETCH p.assignee LEFT JOIN FETCH p.creator LEFT JOIN FETCH p.release WHERE p.id = :entityId ORDER BY p.id", Package.class);
+      TypedQuery<Release> findByIdQuery = em.createQuery("SELECT DISTINCT r FROM Release r WHERE r.id = :entityId ORDER BY r.id", Release.class);
       findByIdQuery.setParameter("entityId", id);
-      Package entity;
+      Release entity;
       try
       {
          entity = findByIdQuery.getSingleResult();
@@ -78,9 +78,9 @@ public class PackageEndpoint
 
    @GET
    @Produces("application/json")
-   public List<Package> listAll(@QueryParam("start") Integer startPosition, @QueryParam("max") Integer maxResult)
+   public List<Release> listAll(@QueryParam("start") Integer startPosition, @QueryParam("max") Integer maxResult)
    {
-      TypedQuery<Package> findAllQuery = em.createQuery("SELECT DISTINCT p FROM Package p LEFT JOIN FETCH p.assignee LEFT JOIN FETCH p.creator LEFT JOIN FETCH p.release ORDER BY p.id", Package.class);
+      TypedQuery<Release> findAllQuery = em.createQuery("SELECT DISTINCT r FROM Release r ORDER BY r.id", Release.class);
       if (startPosition != null)
       {
          findAllQuery.setFirstResult(startPosition);
@@ -89,14 +89,14 @@ public class PackageEndpoint
       {
          findAllQuery.setMaxResults(maxResult);
       }
-      final List<Package> results = findAllQuery.getResultList();
+      final List<Release> results = findAllQuery.getResultList();
       return results;
    }
 
    @PUT
    @Path("/{id:[0-9][0-9]*}")
    @Consumes("application/json")
-   public Response update(Package entity)
+   public Response update(Release entity)
    {
       try
       {

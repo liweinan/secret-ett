@@ -82,3 +82,24 @@ app.controller('WorkflowAppController', function($scope, $http) {
         });
     };
 });
+
+app.controller('PackageAppController', function($scope, $http) {
+
+
+    $scope.users = [];
+    $scope.releases = [];
+    $http.get('/wildbee/rest/users').success(function(data, status, headers, config) {
+        $scope.users = data;
+    });
+
+    $http.get('/wildbee/rest/releases').success(function(data, status, headers, config) {
+        $scope.releases = data;
+    });
+
+    $scope.update = function(package) {
+            $http.post('/wildbee/rest/packages', package).
+            success(function(data, status, headers, config) {
+                alert("success!");
+            });
+    };
+});

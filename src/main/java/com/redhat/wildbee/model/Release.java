@@ -1,12 +1,8 @@
 package com.redhat.wildbee.model;
 
-import javax.persistence.Entity;
+import javax.ejb.PrePassivate;
+import javax.persistence.*;
 import java.io.Serializable;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Column;
-import javax.persistence.Version;
 import java.lang.Override;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -23,8 +19,11 @@ public class Release implements Serializable
    @Column(name = "version")
    private int version;
 
-   @Column(nullable = false)
+   @Column(nullable = false, unique = true)
    private String name;
+
+   @Column(nullable = false)
+   private boolean archived = false;
 
    public Long getId()
    {
@@ -87,6 +86,16 @@ public class Release implements Serializable
       this.name = name;
    }
 
+   public boolean isArchived()
+   {
+      return archived;
+   }
+
+   public void setArchived(boolean archived)
+   {
+      this.archived = archived;
+   }
+
    @Override
    public String toString()
    {
@@ -96,6 +105,7 @@ public class Release implements Serializable
       result += ", version: " + version;
       if (name != null && !name.trim().isEmpty())
          result += ", name: " + name;
+      result += ", archived: " + archived;
       return result;
    }
 }

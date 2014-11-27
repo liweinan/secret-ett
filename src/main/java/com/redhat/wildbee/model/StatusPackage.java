@@ -25,7 +25,7 @@ public class StatusPackage implements Serializable
    @Column(name = "version")
    private int version;
 
-   @Column(nullable = false)
+   @Column(nullable = false, unique = true)
    private String name;
 
    @Column(nullable = false)

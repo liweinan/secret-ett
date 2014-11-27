@@ -7,9 +7,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 import com.redhat.wildbee.model.User;
+import com.redhat.wildbee.model.Release;
+import javax.persistence.ManyToOne;
 
 @Entity
 @XmlRootElement
+@Table(uniqueConstraints=
+           @UniqueConstraint(columnNames = {"release_id", "name"}))
 public class Package implements Serializable
 {
 
@@ -41,6 +45,9 @@ public class Package implements Serializable
 
    @ManyToOne(optional = false)
    private User creator;
+
+   @ManyToOne
+   private Release release;
 
    public Long getId()
    {
@@ -166,12 +173,25 @@ public class Package implements Serializable
       this.creator = creator;
    }
 
-   @PreUpdate @PrePersist
-   private void setDateUpdatedAndCreated() {
+   @PreUpdate
+   @PrePersist
+   private void setDateUpdatedAndCreated()
+   {
       Date date = new Date();
-      if (dateCreated == null) {
+      if (dateCreated == null)
+      {
          dateCreated = date;
       }
       dateUpdated = date;
+   }
+
+   public Release getRelease()
+   {
+      return this.release;
+   }
+
+   public void setRelease(final Release release)
+   {
+      this.release = release;
    }
 }
