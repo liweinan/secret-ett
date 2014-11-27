@@ -18,12 +18,13 @@
         <tr ng-repeat="status in statuses">
             <td><strong>{{ status.name }}</strong></td>
             <td ng-repeat="next_status in statuses">
-                <input type="checkbox" ng-model="haha[status.name][next_status.name]" />
+                <input type="checkbox" ng-model="haha[status.id][next_status.id]" />
             </td>
         </tr>
     </table>
     <button ng-click="reset()">RESET</button>
     <button ng-click="update()">SAVE</button>
+    <pre>{{haha}}</pre>
 </form>
 </body>
 </html>

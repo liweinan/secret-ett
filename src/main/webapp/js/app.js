@@ -44,6 +44,20 @@ app.controller('WorkflowAppController', function($scope, $http) {
         $scope.statuses = data;
     });
     $scope.update = function() {
-        alert($scope.haha['Open']['Open']);
+        var hoho = [];
+        Object.keys($scope.haha).forEach(function(key) {
+            var a = {"current_status_id": key, "next_statuses": []};
+
+            Object.keys($scope.haha[key]).forEach(function(keya) {
+                if ($scope.haha[key][keya]) {
+                    a.next_statuses.push(keya);
+                }
+            });
+            if (a.next_statuses.length != 0) {
+                hoho.push(a);
+            }
+        });
+        alert(hoho.toSource());
+
     };
 });
