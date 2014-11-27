@@ -11,11 +11,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class StatusPackage implements Serializable
 {
    public enum Tag {
-      FINISHED, ORDINARY, IN_PROGRESS
+      // NOTE: order of tags matter when it is displayed in the html page.
+      // The first item should become the default!
+      ORDINARY, IN_PROGRESS, FINISHED
    }
 
    @Id
-   @GeneratedValue(strategy = GenerationType.AUTO)
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    @Column(name = "id", updatable = false, nullable = false)
    private Long id;
 
@@ -113,5 +115,12 @@ public class StatusPackage implements Serializable
       if (tag != null)
          result += ", flag: " + tag;
       return result;
+   }
+
+   @PreUpdate @PrePersist
+   private void setTag() {
+      if (tag == null) {
+         tag = Tag.ORDINARY;
+      }
    }
 }

@@ -1,5 +1,6 @@
 package com.redhat.wildbee.rest;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -23,7 +24,7 @@ import javax.ws.rs.core.UriBuilder;
 import com.redhat.wildbee.model.StatusPackage;
 
 /**
- * 
+ *
  */
 @Stateless
 @Path("/statuses")
@@ -74,6 +75,14 @@ public class StatusPackageEndpoint
          return Response.status(Status.NOT_FOUND).build();
       }
       return Response.ok(entity).build();
+   }
+
+   @GET
+   @Path("/tags")
+   @Produces("application/json")
+   public List<StatusPackage.Tag> listTags() {
+      return Arrays.asList(StatusPackage.Tag.values());
+
    }
 
    @GET

@@ -1,5 +1,6 @@
 package com.redhat.wildbee.rest.workflow;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -20,10 +21,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
+
+import com.redhat.wildbee.json.workflow.NewWorkflow;
+import com.redhat.wildbee.model.StatusPackage;
 import com.redhat.wildbee.model.workflow.WorkflowStatus;
 
 /**
- * 
+ *
  */
 @Stateless
 @Path("/workflowstatuses")
@@ -94,19 +98,22 @@ public class WorkflowStatusEndpoint
    }
 
    @PUT
-   @Path("/{id:[0-9][0-9]*}")
+   @Path("/update")
    @Consumes("application/json")
-   public Response update(WorkflowStatus entity)
-   {
-      try
-      {
-         entity = em.merge(entity);
-      }
-      catch (OptimisticLockException e)
-      {
-         return Response.status(Response.Status.CONFLICT).entity(e.getEntity()).build();
-      }
-
-      return Response.noContent().build();
+   @Produces("application/json")
+   /*
+    * TODO: add the actual logic for creating new workflows
+    */
+   public String update(NewWorkflow[] newWorkflows) {
+      System.out.println("heya");
+      System.out.println("heya");
+      System.out.println("heya");
+      System.out.println("heya");
+      System.out.println(newWorkflows[0].getCurrentStatusId());
+      System.out.println("heya");
+      System.out.println("heya");
+      StatusPackage entity = em.find(StatusPackage.class, newWorkflows[0].getCurrentStatusId());
+      System.out.println(entity.getName());
+      return "{\"no\": 5}";
    }
 }

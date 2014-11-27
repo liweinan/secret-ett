@@ -23,14 +23,33 @@ app.controller('UserAppController', function($scope, $http) {
 });
 
 app.controller('StatusAppController', function($scope, $http) {
-    $scope.status = {};
-    $scope.status.name = "";
+
     $scope.reset = function() {
         $scope.status.text = "";
     };
 
-    $scope.update = function() {
-            $http.post('/wildbee/rest/statuses', $scope.status).
+    $scope.tags = [];
+    $http.get('/wildbee/rest/statuses/tags').success(function(data, status, headers, config) {
+        $scope.tags = data;
+    });
+
+    $scope.update = function(status) {
+            $http.post('/wildbee/rest/statuses', status).
+            success(function(data, status, headers, config) {
+                alert("success!");
+            });
+    };
+});
+
+app.controller('ReleaseAppController', function($scope, $http) {
+
+    $scope.reset = function() {
+        $scope.status.text = "";
+    };
+
+
+    $scope.update = function(release) {
+            $http.post('/wildbee/rest/releases', release).
             success(function(data, status, headers, config) {
                 alert("success!");
             });
@@ -46,18 +65,20 @@ app.controller('WorkflowAppController', function($scope, $http) {
     $scope.update = function() {
         var hoho = [];
         Object.keys($scope.haha).forEach(function(key) {
-            var a = {"current_status_id": key, "next_statuses": []};
+            var a = {"currentStatusId": key, "nextStatusesId": []};
 
             Object.keys($scope.haha[key]).forEach(function(keya) {
                 if ($scope.haha[key][keya]) {
-                    a.next_statuses.push(keya);
+                    a.nextStatusesId.push(keya);
                 }
             });
-            if (a.next_statuses.length != 0) {
+            if (a.nextStatusesId.length != 0) {
                 hoho.push(a);
             }
         });
         alert(hoho.toSource());
-
+        $http.put('/wildbee/rest/workflowstatuses/update', hoho).success(function(data, status, headers, config) {
+            alert(status);
+        });
     };
 });
