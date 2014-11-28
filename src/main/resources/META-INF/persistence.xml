@@ -6,7 +6,9 @@
     <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
+      <!--http://stackoverflow.com/a/24417561/2907906-->
       <property name="hibernate.hbm2ddl.auto" value="create"/>
+
       <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.format_sql" value="true"/>
       <property name="hibernate.transaction.flush_before_completion" value="true"/>

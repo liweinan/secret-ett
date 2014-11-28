@@ -86,8 +86,21 @@ app.controller('WorkflowAppController', function($scope, $http) {
 app.controller('PackageAppController', function($scope, $http) {
 
 
-    $scope.users = [];
-    $scope.releases = [];
+    $scope.selected_tags = [];
+
+    $scope.toggleSelection = function(tag) {
+        var idx = $scope.selected_tags.indexOf(tag);
+
+        // is currently selected
+        if (idx > -1) {
+            $scope.selected_tags.splice(idx, 1);
+        }
+        // is newly selected
+        else {
+            $scope.selected_tags.push(tag);
+        }
+    };
+
     $http.get('/wildbee/rest/users').success(function(data, status, headers, config) {
         $scope.users = data;
     });
@@ -96,8 +109,32 @@ app.controller('PackageAppController', function($scope, $http) {
         $scope.releases = data;
     });
 
+    $http.get('/wildbee/rest/statuses').success(function(data, status, headers, config) {
+        $scope.statuses = data;
+    });
+
+    $http.get('/wildbee/rest/packagetags').success(function(data, status, headers, config) {
+        $scope.tags = data;
+    });
+
     $scope.update = function(package) {
+            package.tags = $scope.selected_tags;
             $http.post('/wildbee/rest/packages', package).
+            success(function(data, status, headers, config) {
+                alert("success!");
+            });
+    };
+});
+
+app.controller('PackageTagAppController', function($scope, $http) {
+
+    $scope.reset = function() {
+        $scope.status.text = "";
+    };
+
+
+    $scope.update = function(tag) {
+            $http.post('/wildbee/rest/packagetags', tag).
             success(function(data, status, headers, config) {
                 alert("success!");
             });

@@ -9,11 +9,17 @@ import java.util.Date;
 import com.redhat.wildbee.model.User;
 import com.redhat.wildbee.model.Release;
 import javax.persistence.ManyToOne;
+import com.redhat.wildbee.model.StatusPackage;
+import com.redhat.wildbee.model.PackageTag;
+import java.util.Set;
+import java.util.HashSet;
+import javax.persistence.OneToMany;
+import javax.persistence.FetchType;
 
 @Entity
 @XmlRootElement
-@Table(uniqueConstraints=
-           @UniqueConstraint(columnNames = {"release_id", "name"}))
+@Table(uniqueConstraints =
+      @UniqueConstraint(columnNames = { "release_id", "name" }))
 public class Package implements Serializable
 {
 
@@ -48,6 +54,12 @@ public class Package implements Serializable
 
    @ManyToOne
    private Release release;
+
+   @ManyToOne(optional = false)
+   private StatusPackage status;
+
+   @ManyToMany(fetch = FetchType.EAGER)
+   private Set<PackageTag> tags = new HashSet<PackageTag>();
 
    public Long getId()
    {
@@ -193,5 +205,25 @@ public class Package implements Serializable
    public void setRelease(final Release release)
    {
       this.release = release;
+   }
+
+   public StatusPackage getStatus()
+   {
+      return this.status;
+   }
+
+   public void setStatus(final StatusPackage status)
+   {
+      this.status = status;
+   }
+
+   public Set<PackageTag> getTags()
+   {
+      return this.tags;
+   }
+
+   public void setTags(final Set<PackageTag> tags)
+   {
+      this.tags = tags;
    }
 }
